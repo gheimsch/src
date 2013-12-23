@@ -1,3 +1,4 @@
+/*Hallo Gunnar*/
 /****************************************************************************
 *  o o o o      Berner Fachhochschule
 *        :...o  Technik und Informatik
