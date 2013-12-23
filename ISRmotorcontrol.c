@@ -215,8 +215,8 @@ void ADC_IRQHandler (void)
 
 		/* Alt */
 		/* To test the position-controller exclusively (the other controller have to be commented) */
-		setMotorVoltageL(15);//PID_PHI_L.u );	// set output-voltage by modifying PWM duty-cycle
-		setMotorVoltageR(15);//PID_PHI_R.u );	// set output-voltage by modifying PWM duty-cycle
+		setMotorVoltageL(22);//PID_PHI_L.u );	// set output-voltage by modifying PWM duty-cycle
+		setMotorVoltageR(22);//PID_PHI_R.u );	// set output-voltage by modifying PWM duty-cycle
 
 //	/* Left motor speed-controller */
 ////		Encoder[MotL] -= ( int32_t )(( int16_t )TIM_GetCounter( TIM2 ));	// get encoder value
@@ -248,8 +248,8 @@ void ADC_IRQHandler (void)
 
 	/* Only for debugging */
 		/* Save Encoder-, Current- and Controller-data in arrays (250 values per second) */
-		if(j>=40 && i<1250)
-		{
+		//if(j>=40 && i<1250)
+		//{
 			/* Get odometry data */
 //			Encoder[OdoL] += ( int32_t )(( int16_t )TIM_GetCounter( TIM4 ));
 //			Encoder[OdoR] += ( int32_t )(( int16_t )TIM_GetCounter( TIM5 ));
@@ -270,8 +270,8 @@ void ADC_IRQHandler (void)
 //			ControllerDataR_y[i] = PID_PHI_R.y;
 
 			i++;
-			j = 0;
-		}
+			//j = 0;
+		//}
 		j++;
 	}
 }
@@ -495,6 +495,8 @@ inline float get_PID_PHI_R_w( void )
 float getCurrentL( void )
 {
 	float current;
+	int adc;
+	adc = ADC_GetConversionValue(ADC1);
 	current = getCurrent( getADCvoltage( ADC_GetConversionValue(ADC1) ) );
 	return current;
 }	
