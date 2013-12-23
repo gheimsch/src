@@ -25,6 +25,7 @@
 
 /*-------------------------------defines-----------------------------------*/
 #define PWMPulseValue ( 500 )
+#define PWMPulseOffset	100
 
 /*----------------------exported (global) functions-------------------------*/
 extern void initLEDs( void );

@@ -161,6 +161,8 @@ static void setMotorVoltageL( float voltage );
 static void setMotorVoltageR( float voltage );
 static float getCurrentL( void );
 static float getCurrentR( void );
+static void setPWMMotorL( int8_t speed );
+static void setPWMMotorL( int8_t speed );
 
 /****************************************************************************
 *  Procedure  : ADC_IRQHandler
@@ -523,4 +525,72 @@ float getCurrentR( void )
 	float current;
 	current = getCurrent( getADCvoltage( ADC_GetConversionValue(ADC2) ) );
 	return current;
-}	
+}
+
+
+/****************************************************************************
+*  Procedure  : setPWMMotorL
+*****************************************************************************
+*  Function   : Comment here
+*
+*  Input Para : speed of the left Motor (-100 to 100)
+*
+*  Return     : -
+*
+*  Author     : meert1
+*
+*  Version    : V0.1
+*
+*  History    : 23.12.2013	meert1 - Function added to Project
+*
+****************************************************************************/
+static void setPWMMotorL( int8_t speed )
+{
+	/* Check if the speedvalui is in the correct range */
+	if(speed < -100)
+	{
+		speed = -100;
+	}
+	else if(speed > 100)
+	{
+		speed = 100;
+	}
+
+	/* Set PWM-DutyCycles (PWMPulseOffset is defined in inits.h) */
+	PWM_A_DutyCycle = (uint16_t)( PWMPulseOffset + speed );
+	PWM_B_DutyCycle = (uint16_t)( PWMPulseOffset - speed );
+}
+
+
+/****************************************************************************
+*  Procedure  : setPWMMotorR
+*****************************************************************************
+*  Function   : Comment here
+*
+*  Input Para : speed of the right Motor (-100 to 100)
+*
+*  Return     : -
+*
+*  Author     : meert1
+*
+*  Version    : V0.1
+*
+*  History    : 23.12.2013	meert1 - Function added to Project
+*
+****************************************************************************/
+static void setPWMMotorR( int8_t speed )
+{
+	/* Check if the speedvalui is in the correct range */
+	if(speed < -100)
+	{
+		speed = -100;
+	}
+	else if(speed > 100)
+	{
+		speed = 100;
+	}
+
+	/* Set PWM-DutyCycles (PWMPulseOffset is defined in inits.h) */
+	PWM_C_DutyCycle = (uint16_t)( PWMPulseOffset + speed );
+	PWM_D_DutyCycle = (uint16_t)( PWMPulseOffset - speed );
+}
