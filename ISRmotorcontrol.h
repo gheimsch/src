@@ -82,11 +82,9 @@
 /* Alt */
 #define PWMScale	( 499.0f / 24.0f )	//convertss the controller output to a PWM signa... ??
 
-/* Intermediate macros for current-calculation */
-#define CurrentSenseOffset ( 1.65f )											// 3.3V / 2
-#define CurrentSenseScale ( (float)(CurrentSenseOffset / MaxMotorCurrent) )		// 1.65V / 10A = 0.165V/A
-#define getADCvoltage( adcVal ) ( (3.3f / 4096.0f) * (float)(adcVal) )			// 3.3V resolution value / (2^12 = 4096)
-#define getCurrent( Uadc ) ( (Uadc - CurrentSenseOffset) / CurrentSenseScale )	// Transforms the ADC-voltage (0V to 3.3V) in a current (-10A to 10A)
+/*current-calculation */
+#define CURRENTOFFSET ( 1.65f )			// 3.3V / 2
+#define CURRENTSCALE  ( 0.11f )			// For the used IC 110mV/A
 
 /* Encoder defines */
 #define MotL (0)

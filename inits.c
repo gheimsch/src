@@ -309,8 +309,8 @@ void initPWMoutputs( void )
 
 	/* Initialize the timer */
 	/* On base of 168MHz we generate a 18.667kHz-PWM-signal with 1000-steps resolution */
-	TIM_TimeBaseStructure.TIM_Period = 999; 	// Equals 1000 steps
-	TIM_TimeBaseStructure.TIM_Prescaler = 8; 	// 168MHz / ( 8 + 1 ) / 1000 = 18.667kHz
+	TIM_TimeBaseStructure.TIM_Period = 200; 	// Equals 1000 steps
+	TIM_TimeBaseStructure.TIM_Prescaler = 15; 	// 168MHz / ( 8 + 1 ) / 1000 = 18.667kHz
 	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 

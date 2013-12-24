@@ -217,8 +217,9 @@ void ADC_IRQHandler (void)
 
 		/* Alt */
 		/* To test the position-controller exclusively (the other controller have to be commented) */
-		setMotorVoltageL(22);//PID_PHI_L.u );	// set output-voltage by modifying PWM duty-cycle
-		setMotorVoltageR(22);//PID_PHI_R.u );	// set output-voltage by modifying PWM duty-cycle
+		//setMotorVoltageL(5);//PID_PHI_L.u );	// set output-voltage by modifying PWM duty-cycle
+		//setMotorVoltageR(5);//PID_PHI_R.u );	// set output-voltage by modifying PWM duty-cycle
+		setPWMMotorL(50);
 
 //	/* Left motor speed-controller */
 ////		Encoder[MotL] -= ( int32_t )(( int16_t )TIM_GetCounter( TIM2 ));	// get encoder value
@@ -262,7 +263,7 @@ void ADC_IRQHandler (void)
 //			EncoderDataOdoR[i] = Encoder[OdoR];
 
 			CurrentDataL[i] = (int32_t)(getCurrentL() * 1000000);	// * 10^6 um die Stellen nach dem Komma aufzuzeigen
-			CurrentDataR[i] = (int32_t)(getCurrentR() * 1000000);	// muss wieder geteilt werden!
+			//CurrentDataR[i] = (int32_t)(getCurrentR() * 1000000);	// muss wieder geteilt werden!
 
 //			ControllerDataL_w[i] = PID_PHI_L.w;
 //			ControllerDataL_u[i] = PID_PHI_L.u;
@@ -271,10 +272,10 @@ void ADC_IRQHandler (void)
 //			ControllerDataR_u[i] = PID_PHI_R.u;
 //			ControllerDataR_y[i] = PID_PHI_R.y;
 
-			i++;
+			//i++;
 			//j = 0;
 		//}
-		j++;
+		//j++;
 	}
 }
 
@@ -487,7 +488,7 @@ inline float get_PID_PHI_R_w( void )
 *
 *  Return	  : current in A
 *
-*  Author     : haldj3
+*  Author     : heimg1
 *
 *  Version    : V0.1
 *
@@ -497,9 +498,10 @@ inline float get_PID_PHI_R_w( void )
 float getCurrentL( void )
 {
 	float current;
-	int adc;
-	adc = ADC_GetConversionValue(ADC1);
-	current = getCurrent( getADCvoltage( ADC_GetConversionValue(ADC1) ) );
+	int ADCValue1;
+	ADCValue1 = ADC_GetConversionValue(ADC1);
+	//3.3V refers to the ADC ref Voltage and 4096 refers to the ADC resolution 2^12
+	current = ((ADCValue1*3.3/4096)-CURRENTOFFSET)/CURRENTSCALE;
 	return current;
 }	
 
@@ -513,7 +515,7 @@ float getCurrentL( void )
 *
 *  Return	  : current in A
 *
-*  Author     : haldj3
+*  Author     : heimg1
 *
 *  Version    : V0.1
 *
@@ -523,7 +525,10 @@ float getCurrentL( void )
 float getCurrentR( void )
 {
 	float current;
-	current = getCurrent( getADCvoltage( ADC_GetConversionValue(ADC2) ) );
+	int ADCValue2;
+	ADCValue2 = ADC_GetConversionValue(ADC2);
+	//3.3V refers to the ADC ref Voltage and 4096 refers to the ADC resolution 2^12
+	current = ((ADCValue2*3.3/4096)-CURRENTOFFSET)/CURRENTSCALE;
 	return current;
 }
 

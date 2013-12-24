@@ -81,7 +81,7 @@ void initDrivingTask( unsigned portBASE_TYPE uxPriority )
 	initEncoder();				// declared in the file 'inits.c'
 
 	/* Spawn the task */
-	xTaskCreate( vDrivingTask, ( signed char * ) "Driving", drivingSTACK_SIZE, NULL, uxPriority, ( xTaskHandle * ) NULL );
+	//TODO//xTaskCreate( vDrivingTask, ( signed char * ) "Driving", drivingSTACK_SIZE, NULL, uxPriority, ( xTaskHandle * ) NULL );
 }					
 		
 /****************************************************************************

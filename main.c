@@ -67,21 +67,21 @@ int main(void)
 	prvSetupHardware();
 
 	/* Initialize LED-control */
-	initLEDTasks( mainFLASH_TASK_PRIORITY );
+	//initLEDTasks( mainFLASH_TASK_PRIORITY );
 
 	/* Initialize drive manager */
-	initDrivemanagerTask( mainCONTROL_TASK_PRIORITY );
+	//initDrivemanagerTask( mainCONTROL_TASK_PRIORITY );
 
 	/* Initialize motor control */
 	initDrivingTask( mainPERFORM_TASK_PRIORITY );
 
 	/* Initialize CAN gatekeeper */
-	initCANGatekeeper();	// Have to be called before the scheduler and as the last initialization
+	//initCANGatekeeper();	// Have to be called before the scheduler and as the last initialization
 
 	//txGotoXY(239,137,180,20,points);
 
 	/* Start the scheduler */
-	vTaskStartScheduler();
+	//vTaskStartScheduler();
 	
 	/* Infinite loop */
 	for( ;; );
