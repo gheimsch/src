@@ -282,16 +282,24 @@ void initCurrentMeasure( void )
 void initPWMoutputs( void )
 {
 	/* Enables peripheral clocks */
-	RCC_AHB1PeriphClockCmd( RCC_AHB1Periph_GPIOA, ENABLE );		// EN PeriphClock for GPIOA
+	RCC_AHB1PeriphClockCmd( RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_GPIOB, ENABLE );		// EN PeriphClock for GPIOA
 	RCC_APB2PeriphClockCmd( RCC_APB2Periph_TIM1, ENABLE );		// EN PeriphClock for TIM1
 
 	/* GPIO Configuration: PWM Outputs ( PWM A, B, C, D ) */
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_10;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init( GPIOA, &GPIO_InitStructure );
+
+	/* GPIO Configuration: PWM Outputs ( PWM A, B, C, D ) */
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_15;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init( GPIOB, &GPIO_InitStructure );
 
 	/* GPIO Configuration: Enable-Signals for Full-Bridge ( EN A&B, EN C&D ) */
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12 | GPIO_Pin_13;
@@ -303,14 +311,14 @@ void initPWMoutputs( void )
 
 	/* Route the correct peripherals (TIM1) to the pins */
 	GPIO_PinAFConfig(GPIOA, GPIO_PinSource8,  GPIO_AF_TIM1);
-	GPIO_PinAFConfig(GPIOA, GPIO_PinSource9,  GPIO_AF_TIM1);
+	GPIO_PinAFConfig(GPIOB, GPIO_PinSource13,  GPIO_AF_TIM1);
 	GPIO_PinAFConfig(GPIOA, GPIO_PinSource10, GPIO_AF_TIM1);
-	GPIO_PinAFConfig(GPIOA, GPIO_PinSource11, GPIO_AF_TIM1);
+	GPIO_PinAFConfig(GPIOB, GPIO_PinSource15, GPIO_AF_TIM1);
 
 	/* Initialize the timer */
 	/* On base of 168MHz we generate a 18.667kHz-PWM-signal with 1000-steps resolution */
-	TIM_TimeBaseStructure.TIM_Period = 200; 	// Equals 1000 steps
-	TIM_TimeBaseStructure.TIM_Prescaler = 15; 	// 168MHz / ( 8 + 1 ) / 1000 = 18.667kHz
+	TIM_TimeBaseStructure.TIM_Period = 199; 	// Equals 1000 steps
+	TIM_TimeBaseStructure.TIM_Prescaler = 8; 	// 168MHz / ( 8 + 1 ) / 1000 = 18.667kHz
 	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 
@@ -323,19 +331,19 @@ void initPWMoutputs( void )
 	TIM_OCInitStructure.TIM_OutputNState = TIM_OutputNState_Enable;
 	TIM_OCInitStructure.TIM_Pulse = PWMPulseValue;
 	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
-	TIM_OCInitStructure.TIM_OCNPolarity = TIM_OCPolarity_High;
+	TIM_OCInitStructure.TIM_OCNPolarity = TIM_OCNPolarity_High;
 	TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Reset;
 	TIM_OCInitStructure.TIM_OCNIdleState = TIM_OCNIdleState_Reset;
 
 	/* Enable all four Channels of the timer */
 	TIM_OC1Init( TIM1, &TIM_OCInitStructure);
 	TIM_OC1PreloadConfig( TIM1 , TIM_OCPreload_Enable);
-	TIM_OC2Init( TIM1, &TIM_OCInitStructure);
-	TIM_OC2PreloadConfig( TIM1 , TIM_OCPreload_Enable);
+	//TIM_OC2Init( TIM1, &TIM_OCInitStructure);
+	//TIM_OC2PreloadConfig( TIM1 , TIM_OCPreload_Enable);
 	TIM_OC3Init( TIM1, &TIM_OCInitStructure);
 	TIM_OC3PreloadConfig( TIM1 , TIM_OCPreload_Enable);
-	TIM_OC4Init( TIM1, &TIM_OCInitStructure);
-	TIM_OC4PreloadConfig( TIM1 , TIM_OCPreload_Enable);
+	//TIM_OC4Init( TIM1, &TIM_OCInitStructure);
+	//TIM_OC4PreloadConfig( TIM1 , TIM_OCPreload_Enable);
 
 	/* for Advanced timer enable the arr-register */
 	TIM_ARRPreloadConfig( TIM1, ENABLE );

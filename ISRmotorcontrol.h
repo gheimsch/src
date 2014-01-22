@@ -75,9 +75,7 @@
 
 /* PWM DutyCycles */
 #define PWM_A_DutyCycle	( TIM1->CCR1 )
-#define PWM_B_DutyCycle	( TIM1->CCR2 )
 #define PWM_C_DutyCycle	( TIM1->CCR3 )
-#define PWM_D_DutyCycle	( TIM1->CCR4 )
 
 /* Alt */
 #define PWMScale	( 499.0f / 24.0f )	//convertss the controller output to a PWM signa... ??

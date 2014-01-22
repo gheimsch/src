@@ -162,7 +162,7 @@ static void setMotorVoltageR( float voltage );
 static float getCurrentL( void );
 static float getCurrentR( void );
 static void setPWMMotorL( int8_t speed );
-static void setPWMMotorL( int8_t speed );
+static void setPWMMotorR( int8_t speed );
 
 /****************************************************************************
 *  Procedure  : ADC_IRQHandler
@@ -219,7 +219,8 @@ void ADC_IRQHandler (void)
 		/* To test the position-controller exclusively (the other controller have to be commented) */
 		//setMotorVoltageL(5);//PID_PHI_L.u );	// set output-voltage by modifying PWM duty-cycle
 		//setMotorVoltageR(5);//PID_PHI_R.u );	// set output-voltage by modifying PWM duty-cycle
-		setPWMMotorL(50);
+		setPWMMotorL(80);
+		setPWMMotorR(80);
 
 //	/* Left motor speed-controller */
 ////		Encoder[MotL] -= ( int32_t )(( int16_t )TIM_GetCounter( TIM2 ));	// get encoder value
@@ -263,7 +264,7 @@ void ADC_IRQHandler (void)
 //			EncoderDataOdoR[i] = Encoder[OdoR];
 
 			CurrentDataL[i] = (int32_t)(getCurrentL() * 1000000);	// * 10^6 um die Stellen nach dem Komma aufzuzeigen
-			//CurrentDataR[i] = (int32_t)(getCurrentR() * 1000000);	// muss wieder geteilt werden!
+			CurrentDataR[i] = (int32_t)(getCurrentR() * 1000000);	// muss wieder geteilt werden!
 
 //			ControllerDataL_w[i] = PID_PHI_L.w;
 //			ControllerDataL_u[i] = PID_PHI_L.u;
@@ -352,7 +353,6 @@ static void setMotorVoltageL( float voltage )
 
 	/* Set PWM-DutyCycles (PWMPulseValue is defined in inits.h) */
 	PWM_A_DutyCycle = (uint16_t)( PWMPulseValue + (int16_t)voltage );
-	PWM_B_DutyCycle = (uint16_t)( PWMPulseValue - (int16_t)voltage );
 }
  
 /****************************************************************************
@@ -391,7 +391,6 @@ static void setMotorVoltageR( float voltage )
 
 	/* Set PWM-DutyCycles (PWMPulseValue is defined in inits.h) */
 	PWM_C_DutyCycle = (uint16_t)( PWMPulseValue + (int16_t)voltage );
-	PWM_D_DutyCycle = (uint16_t)( PWMPulseValue - (int16_t)voltage );
 }
  
 /****************************************************************************
@@ -563,7 +562,6 @@ static void setPWMMotorL( int8_t speed )
 
 	/* Set PWM-DutyCycles (PWMPulseOffset is defined in inits.h) */
 	PWM_A_DutyCycle = (uint16_t)( PWMPulseOffset + speed );
-	PWM_B_DutyCycle = (uint16_t)( PWMPulseOffset - speed );
 }
 
 
@@ -597,5 +595,4 @@ static void setPWMMotorR( int8_t speed )
 
 	/* Set PWM-DutyCycles (PWMPulseOffset is defined in inits.h) */
 	PWM_C_DutyCycle = (uint16_t)( PWMPulseOffset + speed );
-	PWM_D_DutyCycle = (uint16_t)( PWMPulseOffset - speed );
 }
